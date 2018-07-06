@@ -9,7 +9,7 @@ The official iOS Electrode Native Container currently exposes four build configu
 - [`Project-Debug`](https://github.com/electrode-io/electrode-native/blob/master/ern-container-gen-ios/src/hull/Config/Project-Debug.xcconfig) _(Electrode Container project Debug)_
 - [`Project-Release`](https://github.com/electrode-io/electrode-native/blob/master/ern-container-gen-ios/src/hull/Config/Project-Release.xcconfig) _(Electrode Container project Release)_
 - [`ElectrodeContainer-Debug`](https://github.com/electrode-io/electrode-native/blob/master/ern-container-gen-ios/src/hull/Config/ElectrodeContainer-Debug.xcconfig) _(Electrode Container target Debug)_
-- [`ElectrodeContainer-Release`](<(https://github.com/electrode-io/electrode-native/blob/master/ern-container-gen-ios/src/hull/Config/ElectrodeContainer-Release.xcconfig)>) _(Electrode Container target Release)_
+- [`ElectrodeContainer-Release`](https://github.com/electrode-io/electrode-native/blob/master/ern-container-gen-ios/src/hull/Config/ElectrodeContainer-Release.xcconfig) _(Electrode Container target Release)_
 
 Each of these build configurations are coming with some build settings that might not play well with your native application upon integration of the Container.
 
