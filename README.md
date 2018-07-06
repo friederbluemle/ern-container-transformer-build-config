@@ -1,6 +1,6 @@
 **== NOT YET SUPPORTED : Transformer support will be released in Electrode Native 0.21.0===**
 
-# Electrode Native iOS Build Configuration Container Transformer
+# iOS Build Configuration Container Transformer
 
 This transformer can be used to update Build Configuration(s) of a generated iOS Container.
 
