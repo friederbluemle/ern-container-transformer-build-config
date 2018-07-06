@@ -65,7 +65,7 @@ This will result in the following transformer entry in Cauldron :
 }
 ```
 
-### With Code
+### Programmatically
 
 ```js
 import BuildConfigTransformer from 'ern-container-transformer-build-config'
