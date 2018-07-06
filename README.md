@@ -37,7 +37,7 @@ Using this transformer, you can update one or more of these build configurations
 
 ## Usage
 
-### Through `ern transform-container` CLI command
+### With `ern transform-container` CLI command
 
 ```bash
 $ ern transform-container --containerPath [pathToContainer] -t build-config -c '{"configurations":[...], "settings":{...}}'
@@ -45,7 +45,7 @@ $ ern transform-container --containerPath [pathToContainer] -t build-config -c '
 
 Instead of passing the whole configuration on the command line for `--config/-c`, you can instead specify a file path of a json file holding the configuration.
 
-### Through Cauldron
+### With Cauldron
 
 To automatically transform the Cauldron generated Containers of a target native application and platform, the `ern cauldron add transformer` command can be used as follow :
 
@@ -65,7 +65,7 @@ This will result in the following transformer entry in Cauldron :
 }
 ```
 
-### Through Code
+### With Code
 
 ```js
 import BuildConfigTransformer from 'ern-container-transformer-build-config'
