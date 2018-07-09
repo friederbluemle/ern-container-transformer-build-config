@@ -43,27 +43,27 @@ Using this transformer, you can update one or more of these build configurations
 $ ern transform-container --containerPath [pathToContainer] -t build-config -c '{"configurations":[...], "settings":{...}}'
 ```
 
-Instead of passing the whole configuration on the command line for `--config/-c`, you can instead specify a file path of a json file holding the configuration.
+Instead of passing the whole configuration on the command line for `--config/-c`, it is also possible to use a file path of a json file holding the configuration.
+
+The configuration object can also be an array holding multiple objects, such as `[{"configurations":[...], "settings":{...}}, {"configurations":[...], "settings":{...}}]`
 
 ### With Cauldron
 
-To automatically transform the Cauldron generated Containers of a target native application and platform, the `ern cauldron add transformer` command can be used as follow :
-
-```bash
-$ ern cauldron add transformer -t build-config -c '{"configurations":[...], "settings":{...}}'
-```
-
-Instead of passing the whole configuration on the command line for `--config/-c`, you can instead specify a file path of a json file holding the configuration.
-
-This will result in the following transformer entry in Cauldron :
+To automatically transform the Cauldron generated Containers of a target native application and platform, you can add a transformer entry in the Cauldron in the Container generator configuration object as follow :
 
 ```
-{
-  "name": "build-config",
-  "configurations": [...],
-  "settings" : {...}
+"transformers": [
+  {
+    "name": "build-config",
+    "extra": {
+      "configurations": [...],
+      "settings" : {...}
+  }
+]
 }
 ```
+
+The extra object can also be an array holding multiple objects, such as `[{"configurations":[...], "settings":{...}}, {"configurations":[...], "settings":{...}}]`
 
 ### Programmatically
 
@@ -84,3 +84,5 @@ transformer.transform(
   }
 })
 ```
+
+The extra object can also be an array holding multiple objects, such as `[{"configurations":[...], "settings":{...}}, {"configurations":[...], "settings":{...}}]`

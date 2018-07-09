@@ -21,81 +21,85 @@ describe('BuildConfigTransformer', () => {
   })
 
   describe('validate', () => {
-    it('should throw if extra object is undefined', () => {
-      const sut = new BuildConfigTransformer()
-      expect(() => sut.validate()).to.throw()
-    })
-
-    it('should throw if extra object is null', () => {
-      const sut = new BuildConfigTransformer()
-      expect(() => sut.validate(null)).to.throw()
-    })
-
     it('should throw if extra.configurations is undefined', () => {
       const sut = new BuildConfigTransformer()
       expect(() =>
-        sut.validate({
-          settings: { CLANG_ENABLE_MODULES: 'YES' },
-        })
+        sut.validate([
+          {
+            settings: { CLANG_ENABLE_MODULES: 'YES' },
+          },
+        ])
       ).to.throw()
     })
 
     it('should throw if extra.configurations is null', () => {
       const sut = new BuildConfigTransformer()
       expect(() =>
-        sut.validate({
-          configurations: null,
-          settings: { CLANG_ENABLE_MODULES: 'YES' },
-        })
+        sut.validate([
+          {
+            configurations: null,
+            settings: { CLANG_ENABLE_MODULES: 'YES' },
+          },
+        ])
       ).to.throw()
     })
 
     it('should throw if extra.configurations is not an array', () => {
       const sut = new BuildConfigTransformer()
       expect(() =>
-        sut.validate({
-          configurations: {},
-          settings: { CLANG_ENABLE_MODULES: 'YES' },
-        })
+        sut.validate([
+          {
+            configurations: {},
+            settings: { CLANG_ENABLE_MODULES: 'YES' },
+          },
+        ])
       ).to.throw()
     })
 
     it('should throw if extra.configurations is an empty array', () => {
       const sut = new BuildConfigTransformer()
       expect(() =>
-        sut.validate({
-          configurations: [],
-          settings: { CLANG_ENABLE_MODULES: 'YES' },
-        })
+        sut.validate([
+          {
+            configurations: [],
+            settings: { CLANG_ENABLE_MODULES: 'YES' },
+          },
+        ])
       ).to.throw()
     })
 
     it('should throw if extra.settings is undefined', () => {
       const sut = new BuildConfigTransformer()
       expect(() =>
-        sut.validate({
-          configurations: ['ElectrodeContainer-Debug'],
-        })
+        sut.validate([
+          {
+            configurations: ['ElectrodeContainer-Debug'],
+          },
+        ])
       ).to.throw()
     })
 
     it('should throw if extra.settings is an empty object', () => {
       const sut = new BuildConfigTransformer()
       expect(() =>
-        sut.validate({
-          configurations: ['ElectrodeContainer-Debug'],
-          settings: {},
-        })
+        sut.validate([
+          {
+            configurations: ['ElectrodeContainer-Debug'],
+            settings: {},
+          },
+        ])
       ).to.throw()
     })
 
     it('should not throw if extra object is valid', () => {
       const sut = new BuildConfigTransformer()
       expect(() =>
-        sut.validate({
-          configurations: ['ElectrodeContainer-Debug'],
-          settings: { CLANG_ENABLE_MODULES: 'YES' },
-        })
+        sut.validate([
+          {
+            configurations: ['ElectrodeContainer-Debug'],
+            settings: { CLANG_ENABLE_MODULES: 'YES' },
+          },
+        ])
       ).to.not.throw()
     })
   })

@@ -2,6 +2,23 @@ import path from 'path'
 import { exists, readFile } from './fs-async'
 import XCConfig from './XCConfig'
 
+export interface BuildConfigTransformerExtra {
+  /**
+   * Build configuration(s) to mutate.
+   * One to one mapping to a xcconfig file.
+   * Ex : [ 'Project-Debug', 'ElectrodeContainer-Debug' ]
+   */
+  configurations: string[]
+  /**
+   * Settings to add or update in the build configuration(s)
+   * Ex : {
+   *  ENABLE_BITCODE: "NO",
+   *  PRODUCT_BUNDLE_IDENTIFIER = "com.mycompany.ElectrodeContainer"
+   * }
+   */
+  settings: object
+}
+
 export default class BuildConfigTransformer {
   /**
    * Name of the iOS Container directory holding all of the .xcconfig files
@@ -30,26 +47,20 @@ export default class BuildConfigTransformer {
     extra,
   }: {
     containerPath: string
-    extra?: {
-      /**
-       * Build configuration(s) to mutate.
-       * One to one mapping to a xcconfig file.
-       * Ex : [ 'Project-Debug', 'ElectrodeContainer-Debug' ]
-       */
-      configurations: string[]
-      /**
-       * Settings to add or update in the build configuration(s)
-       * Ex : {
-       *  ENABLE_BITCODE: "NO",
-       *  PRODUCT_BUNDLE_IDENTIFIER = "com.mycompany.ElectrodeContainer"
-       * }
-       */
-      settings: object
-    }
+    extra?: BuildConfigTransformerExtra | BuildConfigTransformerExtra[]
   }) {
+    if (!extra) {
+      this.throwError('Missing extra property')
+    }
+
+    const extraArr: BuildConfigTransformerExtra[] =
+      extra instanceof Array
+        ? (extra as BuildConfigTransformerExtra[])
+        : ([extra] as BuildConfigTransformerExtra[])
+
     //
     // Validate extra object (throw if invalid)
-    this.validate(extra)
+    this.validate(extraArr)
 
     //
     // Construct absolute path to the iOS Container directory containing the
@@ -64,45 +75,48 @@ export default class BuildConfigTransformer {
       )
     }
 
-    //
-    // Construct paths to all .xcconfig files to transform
-    const xcconfigFilesToTransform = extra!.configurations
-      .map(c => `${c}.xcconfig`)
-      .map(f => path.join(pathToXCodeConfigFiles, f))
+    for (const conf of extraArr) {
+      //
+      // Construct paths to all .xcconfig files to transform
+      const xcconfigFilesToTransform = conf!.configurations
+        .map(c => `${c}.xcconfig`)
+        .map(f => path.join(pathToXCodeConfigFiles, f))
 
-    //
-    // For each .xcconfig file to transform
-    for (const xcconfigFileToTransform of xcconfigFilesToTransform) {
       //
-      // Ensure existence
-      if (!(await exists(xcconfigFileToTransform))) {
-        this.throwError(`Cannot find xcconfig file ${xcconfigFileToTransform}`)
+      // For each .xcconfig file to transform
+      for (const xcconfigFileToTransform of xcconfigFilesToTransform) {
+        //
+        // Ensure existence
+        if (!(await exists(xcconfigFileToTransform))) {
+          this.throwError(
+            `Cannot find xcconfig file ${xcconfigFileToTransform}`
+          )
+        }
+        //
+        // Transform settings (add or update settings) in the .xconfig file
+        const xcconfig = new XCConfig(xcconfigFileToTransform)
+        await xcconfig.addOrUpdateBuildSettings(conf!.settings)
       }
-      //
-      // Transform settings (add or update settings) in the .xconfig file
-      const xcconfig = new XCConfig(xcconfigFileToTransform)
-      await xcconfig.addOrUpdateBuildSettings(extra!.settings)
     }
   }
 
-  public validate(extra: any) {
-    if (!extra) {
-      this.throwError('Missing extra property')
-    }
-    if (!extra.configurations) {
-      this.throwError('Missing extra.configurations property')
-    }
-    if (!(extra.configurations instanceof Array)) {
-      this.throwError('extra.configurations must be an array')
-    }
-    if (extra.configurations.length === 0) {
-      this.throwError('extra.configuration cannot be an empty array')
-    }
-    if (!extra.settings) {
-      this.throwError('Missing extra.settings property')
-    }
-    if (Object.keys(extra.settings).length === 0) {
-      this.throwError('extra.settings cannot be an empty object')
+  public validate(extraArr: BuildConfigTransformerExtra[]) {
+    for (const conf of extraArr) {
+      if (!conf.configurations) {
+        this.throwError('Missing configurations property')
+      }
+      if (!(conf.configurations instanceof Array)) {
+        this.throwError('configurations must be an array')
+      }
+      if (conf.configurations.length === 0) {
+        this.throwError('configurations cannot be an empty array')
+      }
+      if (!conf.settings) {
+        this.throwError('Missing settings property')
+      }
+      if (Object.keys(conf.settings).length === 0) {
+        this.throwError('settings cannot be an empty object')
+      }
     }
   }
 
