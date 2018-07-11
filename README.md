@@ -1,5 +1,3 @@
-**== NOT YET SUPPORTED : Transformer support will be released in Electrode Native 0.21.0===**
-
 # iOS Build Configuration Container Transformer
 
 This transformer can be used to update Build Configuration(s) of a generated iOS Container.
@@ -51,16 +49,16 @@ The configuration object can also be an array holding multiple objects, such as 
 
 To automatically transform the Cauldron generated Containers of a target native application and platform, you can add a transformer entry in the Cauldron in the Container generator configuration object as follow :
 
-```
+```json
 "transformers": [
   {
     "name": "build-config",
     "extra": {
       "configurations": [...],
       "settings" : {...}
+    }
   }
 ]
-}
 ```
 
 The extra object can also be an array holding multiple objects, such as `[{"configurations":[...], "settings":{...}}, {"configurations":[...], "settings":{...}}]`
@@ -69,7 +67,7 @@ The extra object can also be an array holding multiple objects, such as `[{"conf
 
 ```js
 import BuildConfigTransformer from 'ern-container-transformer-build-config'
-const publisher = new BuildConfigTransformer()
+const transformer = new BuildConfigTransformer()
 transformer.transform(
   {
     /* Local file system path to the Container */
