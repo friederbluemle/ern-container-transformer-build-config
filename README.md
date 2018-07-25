@@ -38,10 +38,10 @@ Using this transformer, you can update one or more of these build configurations
 ### With `ern transform-container` CLI command
 
 ```bash
-$ ern transform-container --containerPath [pathToContainer] -t build-config -c '{"configurations":[...], "settings":{...}}'
+$ ern transform-container --containerPath [pathToContainer] -t build-config -e '{"configurations":[...], "settings":{...}}'
 ```
 
-Instead of passing the whole configuration on the command line for `--config/-c`, it is also possible to use a file path of a json file holding the configuration.
+Instead of passing the whole configuration on the command line for `--extra/-e`, it is also possible to use a file path to a json file holding the configuration, or a path to a file stored in the Cauldron. Check out the [ern transform-container](https://native.electrode.io/cli-commands/transform-container) command documentation for more info.
 
 The configuration object can also be an array holding multiple objects, such as `[{"configurations":[...], "settings":{...}}, {"configurations":[...], "settings":{...}}]`
 
