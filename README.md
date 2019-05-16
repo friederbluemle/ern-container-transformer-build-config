@@ -49,8 +49,24 @@ The configuration object can also be an array holding multiple objects, such as 
 
 To automatically transform the Cauldron generated Containers of a target native application and platform, you can add a transformer entry in the Cauldron in the Container generator configuration object as follow :
 
+**Electrode Native <= 0.31**
+
 ```json
 "transformers": [
+  {
+    "name": "build-config",
+    "extra": {
+      "configurations": [...],
+      "settings" : {...}
+    }
+  }
+]
+```
+
+**Electrode Native >= 0.32**
+
+```json
+"pipleline": [
   {
     "name": "build-config",
     "extra": {
