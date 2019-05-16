@@ -56,8 +56,8 @@ To automatically transform the Cauldron generated Containers of a target native 
   {
     "name": "build-config",
     "extra": {
-      "configurations": [...],
-      "settings" : {...}
+      "configurations": [],
+      "settings" : {}
     }
   }
 ]
@@ -70,8 +70,8 @@ To automatically transform the Cauldron generated Containers of a target native 
   {
     "name": "build-config",
     "extra": {
-      "configurations": [...],
-      "settings" : {...}
+      "configurations": [],
+      "settings": {}
     }
   }
 ]
@@ -99,4 +99,15 @@ transformer.transform(
 })
 ```
 
-The extra object can also be an array holding multiple objects, such as `[{"configurations":[...], "settings":{...}}, {"configurations":[...], "settings":{...}}]`
+The extra object can also be an array holding multiple objects, such as 
+```json
+[
+  {
+    "configurations": [], 
+    "settings": {}
+  }, {
+    "configurations": [], 
+    "settings": {}
+  }
+]
+```
