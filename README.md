@@ -81,7 +81,7 @@ The extra object can also be an array holding multiple objects, such as `[{"conf
 
 ### Programmatically
 
-```js
+```typescript
 import BuildConfigTransformer from 'ern-container-transformer-build-config'
 const transformer = new BuildConfigTransformer()
 transformer.transform(
