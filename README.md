@@ -1,5 +1,7 @@
 # iOS Build Configuration Container Transformer
 
+[![ci][1]][2]
+
 This transformer can be used to update Build Configuration(s) of a generated iOS Container.
 
 The official iOS Electrode Native Container currently exposes four build configurations:
@@ -112,3 +114,6 @@ The extra object can also be an array holding multiple objects, such as
   }
 ]
 ```
+
+[1]: https://github.com/electrode-io/ern-container-transformer-build-config/workflows/ci/badge.svg
+[2]: https://github.com/electrode-io/ern-container-transformer-build-config/actions
