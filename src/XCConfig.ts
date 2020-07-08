@@ -1,5 +1,7 @@
 import { readFile, writeFile, exists } from './fs-async'
 
+export type BuildSettings = { [key: string]: string }
+
 /**
  * Helper class dealing with XCConfig files
  */
@@ -31,7 +33,7 @@ export default class XCConfig {
    *     "SWIFT_OPTIMIZATION_LEVEL":"-Onone"
    *   }
    */
-  public async getBuildSettings(): Promise<object> {
+  public async getBuildSettings(): Promise<BuildSettings> {
     if (!(await exists(this.filePath))) {
       throw new Error(
         `Cannot get build settings from unexisting file : ${this.filePath}`
@@ -56,34 +58,40 @@ export default class XCConfig {
    * @param buildSettings The build settings to write to set in the xcconfig file
    * @returns The buildSettings object that was provided to the method
    */
-  public async setBuildSettings(buildSettings: object): Promise<object> {
-    const configFileContent = Object.keys(buildSettings)
-      .map(k => `${k} = ${buildSettings[k]}`)
-      .join('\n')
+  public async setBuildSettings(
+    buildSettings: BuildSettings
+  ): Promise<BuildSettings> {
+    let configFileContent = (await exists(this.filePath))
+      ? (await readFile(this.filePath)).toString()
+      : ''
+    if (
+      configFileContent.length !== 0 &&
+      configFileContent[configFileContent.length - 1] !== '\n'
+    ) {
+      // Make sure that we have a new line at end of file for proper appending
+      configFileContent += '\n'
+    }
+    for (const [k, v] of Object.entries(buildSettings)) {
+      console.log(`dealing with ${k}`)
+      if (configFileContent.includes(`${k} =`)) {
+        console.log('here')
+        // Build setting already present in config file
+        // Update with new value
+        console.log(`${configFileContent}`)
+        const re = new RegExp(`(${k} = ).*`, 'g')
+        console.log(`test: ${re.test(configFileContent)}`)
+        configFileContent = configFileContent.replace(
+          new RegExp(`(${k} = ).*`, 'g'),
+          `$1${v}`
+        )
+        console.log(`${configFileContent}`)
+      } else {
+        // Build setting not present in config file
+        // Append it to file
+        configFileContent += `${k} = ${v}\n`
+      }
+    }
     await writeFile(this.filePath, configFileContent)
-    return buildSettings
-  }
-
-  /**
-   * Add or update existing build setting in the xcconfig file.
-   * This method will only add new settings in the xcconfig file and
-   * path existing ones. It will leave other settings untouched.
-   * This is a non desctructing patching method.
-   * If the xcconfig file does not exist, it will be created.
-   * @param buildSettings The build settings to write to set in the xcconfig file
-   * @returns The settings of the updated xcconfig file, as an object
-   */
-  public async addOrUpdateBuildSettings(
-    newBuildSettings: object
-  ): Promise<object> {
-    if (!(await exists(this.filePath))) {
-      return this.setBuildSettings(newBuildSettings)
-    }
-    let buildSettings = await this.getBuildSettings()
-    for (const key of Object.keys(newBuildSettings)) {
-      buildSettings[key] = newBuildSettings[key]
-    }
-    await this.setBuildSettings(buildSettings)
     return buildSettings
   }
 }
