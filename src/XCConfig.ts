@@ -72,19 +72,14 @@ export default class XCConfig {
       configFileContent += '\n'
     }
     for (const [k, v] of Object.entries(buildSettings)) {
-      console.log(`dealing with ${k}`)
       if (configFileContent.includes(`${k} =`)) {
-        console.log('here')
         // Build setting already present in config file
         // Update with new value
-        console.log(`${configFileContent}`)
         const re = new RegExp(`(${k} = ).*`, 'g')
-        console.log(`test: ${re.test(configFileContent)}`)
         configFileContent = configFileContent.replace(
           new RegExp(`(${k} = ).*`, 'g'),
           `$1${v}`
         )
-        console.log(`${configFileContent}`)
       } else {
         // Build setting not present in config file
         // Append it to file
