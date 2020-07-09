@@ -1,6 +1,6 @@
 import path from 'path'
 import { exists, readFile } from './fs-async'
-import XCConfig from './XCConfig'
+import XCConfig, {BuildSettings} from './XCConfig'
 
 export interface BuildConfigTransformerExtra {
   /**
@@ -95,7 +95,7 @@ export default class BuildConfigTransformer {
         //
         // Transform settings (add or update settings) in the .xconfig file
         const xcconfig = new XCConfig(xcconfigFileToTransform)
-        await xcconfig.addOrUpdateBuildSettings(conf!.settings)
+        await xcconfig.setBuildSettings(conf!.settings as BuildSettings)
       }
     }
   }
